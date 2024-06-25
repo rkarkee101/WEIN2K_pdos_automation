@@ -1,0 +1,34 @@
+#!/bin/tcsh
+#SBATCH --job-name=bccCe
+#SBATCH --output %J.out
+#SBATCH --error %J.err
+#SBATCH --mem 400GB
+#SBATCH --time=00:30:00
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=2
+#SBATCH --qos=standard
+#SBATCH -A s17_cint
+
+## ----- WIEN2K ----- ##
+setenv PATH $PATH\:/usr/projects/cint/cint_codes/wien2k/2k.19.1-ch/
+setenv SCRATCH /lustre/scratch5/.mdt0/rkarkee/SCRATCH_WIEN/
+setenv WIENROOT /usr/projects/cint/cint_codes/wien2k/2k.19.1-ch
+alias rm 'rm -i'
+alias ls 'ls -F'
+#alias top 'top -XRFt -s 5 -ocpu -Ouid'
+alias pslapw 'ps -ef |grep "lapw"'
+
+## ----- OMP ----- ##
+setenv OMP_PROC_BIND spread
+setenv OMP_PLACES threads
+setenv OMP_NUM_THREADS 1
+
+## ----- MODULES ----- ##
+module load intel/2022.2.1
+module load intel-mkl/2021.4.0
+
+## --- run the application --- ##
+run_lapw   -cc 0.0001  -ec 0.0001  -fc 1.0  -i 100  > stdoutput.out
+

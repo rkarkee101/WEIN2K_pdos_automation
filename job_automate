@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#Submit this script with: sbatch filename
+
+#SBATCH --time=1:00:00   # walltime
+#SBATCH --nodes=1   # number of nodes
+#SBATCH --ntasks-per-node=1   # number of tasks per node
+#SBATCH --job-name=HfTe5   # job name
+#SBATCH --partition=standard   # partition name
+#SBATCH --no-requeue   # do not requeue when preempted and on node failure
+#SBATCH --signal=30@20  # send signal to job at [seconds] before end
+
+bash automate.sh &> automate.log
+
